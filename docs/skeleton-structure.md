@@ -1,0 +1,40 @@
+```bash
+.
++-- api
+   ├── swagger-iam.json
+   ├── swagger-activity-log.json
++-- configs
+   ├── app.dev.yaml
+   ├── app.yaml.dist
++-- cmd
+   ├── app
+      ├── main.go
++-- docs
++-- deployments
+   ├── Dockerfile
+   ├── docker-compose.yaml
++-- infrastructures
+   ├── mariadb.go
+   ├── postgres.go
+   ├── sentry.go
++-- internal
+   ├── pkg
+   +-- http
+      ├── routes.go
+      ├── user.go
+   +-- user
+      ├── model.go
+      +-- schema
+         ├── mariadb.go
+         ├── sql.go
+      ├── repository.go
+      ├── response.go
+      ├── request.go
+      ├── service.go
++-- pkg
+   ├── utils
+├── .dockerignore
+├── .gitignore
+├── Makefile
+├── Readme.md
+```

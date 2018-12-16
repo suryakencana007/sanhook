@@ -1,0 +1,13 @@
+*.DS_Store
+\.idea/
+\.vscode/
+\.logs/
+bin
+build
+configs/app.yaml
+configs/*.dev.yaml
+configs/*.local.yaml
+vendor
+debug
+\mocks
+logs/
