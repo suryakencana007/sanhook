@@ -8,7 +8,6 @@ bin
 build
 configs/*.dev.toml
 configs/*.local.toml
-configs/*.toml
 vendor
 debug
 \mocks

@@ -1,0 +1,49 @@
+[App] # App configuration
+name = "µs-wyonna"
+port = 8080
+read_timeout = 5 # seconds
+write_timeout = 10 # seconds
+timezone = "Asia/Jakarta"
+debug = false # (true|false)
+env = "development" # ('development'|'staging'|'production')
+secret_key = ""
+
+[Api] # Rest API configuration
+prefix = "/api"
+
+[Log] # Log configuration
+dir = "logs"
+filename = "wyonna.log"
+
+[CB]
+retry_count = 3
+db_timeout = 1500
+max_concurrent = 5
+
+[Nats]
+host = "127.0.0.1"
+port = 4222
+no_log = true
+no_signal = true
+max_control_line = 2048
+
+[Postgres]
+db_name = "wyonna"
+host = "localhost"
+port = 54322
+user = "root"
+password = "root"
+max_life_time = 30
+max_idle_connection = 0
+max_open_connection = 0
+
+[Mariadb]
+db_name = "wyonna"
+host = "localhost"
+port = 3306
+user = "root"
+password = "root"
+max_life_time = 30
+max_idle_connection = 0
+max_open_connection = 0
+charset = "utf8"

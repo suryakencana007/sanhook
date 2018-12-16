@@ -1,0 +1,9 @@
+[Appa] # App configuration
+name = "µs-wyonna"
+port = 8080
+read_timeout = 5 # seconds
+writewrite_timeout = 10 # seconds
+timezone = "Asia/Jakarta"
+debug = true # (true|false)
+env = "development" # ('development'|'staging'|'production')
+secret_key = ""
