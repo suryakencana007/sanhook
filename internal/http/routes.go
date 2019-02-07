@@ -39,7 +39,7 @@ func Routes(configuration *configs.Config) *chi.Mux {
         )
         r.Mount(
             fmt.Sprintf(`%s/%s`, configuration.Api.Prefix, "message"),
-            messageMakeHandler(configuration),
+            messageTransport(configuration),
         )
     })
 
