@@ -1,9 +1,9 @@
 /*  message.go
 *
 * @Author:             Nanang Suryadi <nanang.suryadi@kubuskotak.com>
-* @Date:               December 17, 2018
+* @Date:               February 08, 2019
 * @Last Modified by:   @suryakencana007
-* @Last Modified time: 2018-12-17 02:31 
+* @Last Modified time: 2019-02-08 03:20 
  */
 
 package container

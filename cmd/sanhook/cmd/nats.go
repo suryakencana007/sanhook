@@ -17,7 +17,6 @@ import (
     "time"
 
     "github.com/nats-io/gnatsd/server"
-    "github.com/sirupsen/logrus"
     "github.com/spf13/cobra"
     "github.com/spf13/pflag"
     "github.com/suryakencana007/sanhook/configs"
@@ -127,7 +126,7 @@ func (h *natsCmd) serve(opts *server.Options) error {
         case err := <-errCh:
             log.Info(
                 "Server gracefully h stop stopped",
-                logrus.Fields{})
+            )
             return err
         case <-h.stop:
         case <-quit:
@@ -137,7 +136,7 @@ func (h *natsCmd) serve(opts *server.Options) error {
         case err := <-errCh:
             log.Info(
                 "Server gracefully stopped",
-                logrus.Fields{})
+            )
             return err
         case <-quit:
         }

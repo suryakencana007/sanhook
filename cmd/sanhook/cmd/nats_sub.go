@@ -17,7 +17,6 @@ import (
     "time"
 
     "github.com/nats-io/go-nats"
-    "github.com/sirupsen/logrus"
     "github.com/spf13/cobra"
     "github.com/spf13/pflag"
     "github.com/suryakencana007/sanhook/configs"
@@ -86,7 +85,7 @@ func (h *subscribeCmd) serve() error {
     quit := make(chan os.Signal)
     signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 
-    urls := nats.DefaultURL
+    urls := h.configuration.Nats.Host
     // Connect Options.
 
     // Connect Options.
@@ -97,9 +96,8 @@ func (h *subscribeCmd) serve() error {
     if err != nil {
         log.Error(
             "Subscribe Error",
-            logrus.Fields{
-                "error": err.Error(),
-            })
+            log.Field("error", err.Error()),
+        )
     }
     defer nc.Close()
 
@@ -116,18 +114,16 @@ func (h *subscribeCmd) serve() error {
             sub.Unsubscribe()
             log.Error(
                 "Subscribe Error",
-                logrus.Fields{
-                    "error": err.Error(),
-                })
+                log.Field("error", err.Error()),
+            )
             errCh <- err
         }
         if err := nc.Flush();
             err != nil {
             log.Error(
                 "Subscribe Error",
-                logrus.Fields{
-                    "error": err.Error(),
-                })
+                log.Field("error", err.Error()),
+            )
             errCh <- err
         }
         <-h.stop
@@ -138,7 +134,7 @@ func (h *subscribeCmd) serve() error {
         case err := <-errCh:
             log.Info(
                 "Server gracefully h stop stopped",
-                logrus.Fields{})
+            )
             return err
         case <-h.stop:
         case <-quit:
@@ -148,7 +144,7 @@ func (h *subscribeCmd) serve() error {
         case err := <-errCh:
             log.Info(
                 "Server gracefully stopped",
-                logrus.Fields{})
+            )
             return err
         case <-quit:
         }
@@ -164,27 +160,29 @@ func setupConnOptions(opts []nats.Option) []nats.Option {
     opts = append(opts, nats.MaxReconnects(int(totalWait/reconnectDelay)))
     opts = append(opts, nats.DisconnectHandler(func(nc *nats.Conn) {
         log.Info(
-            fmt.Sprintf(
+            "Setup Opts",
+            log.Field("message", fmt.Sprintf(
                 "Disconnected: will attempt reconnects for %.0fm",
-                totalWait.Minutes(),
+                totalWait.Minutes()),
             ),
-            logrus.Fields{})
+        )
     }))
     opts = append(opts, nats.ReconnectHandler(func(nc *nats.Conn) {
         log.Info(
             fmt.Sprintf("Reconnected [%s]", nc.ConnectedUrl()),
-            logrus.Fields{})
+        )
     }))
     opts = append(opts, nats.ClosedHandler(func(nc *nats.Conn) {
         log.Info(
             "Exiting, no servers available",
-            logrus.Fields{})
+        )
     }))
     return opts
 }
 
 func printMsg(m *nats.Msg, i int) {
     log.Info(
-        fmt.Sprintf("[#%d] Received on [%s]: '%s'", i, m.Subject, string(m.Data)),
-        logrus.Fields{})
+        "Subscribe",
+        log.Field(m.Subject, fmt.Sprintf("[#%d] Received on [%s]: '%s'", i, m.Subject, string(m.Data))),
+    )
 }

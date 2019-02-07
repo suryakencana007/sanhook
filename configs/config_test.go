@@ -40,7 +40,7 @@ db_timeout = 1500
 max_concurrent = 5
 
 [Nats]
-host = "127.0.0.1"
+host = "0.0.0.0"
 port = 4222
 no_log = true
 no_signal = true
@@ -52,7 +52,6 @@ host = "localhost"
 port = 54322
 user = "root"
 password = "root"
-charset = "utf8"
 max_life_time = 30
 max_idle_connection = 0
 max_open_connection = 0
@@ -66,7 +65,8 @@ password = "root"
 max_life_time = 30
 max_idle_connection = 0
 max_open_connection = 0
-charset = "utf8"`)
+charset = "utf8"
+`)
 
 var configNoLog = []byte(`
 [App] # App configuration

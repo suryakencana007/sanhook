@@ -38,7 +38,7 @@
    ├── postgres.go
    ├── sentry.go
 +-- internal
-   ├── pkg
+   ├── conatiner (DI)
    +-- http
       ├── routes.go
       ├── user.go

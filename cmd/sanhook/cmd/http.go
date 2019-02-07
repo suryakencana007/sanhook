@@ -21,7 +21,6 @@ import (
 
     "github.com/go-chi/chi"
     "github.com/olekukonko/tablewriter"
-    "github.com/sirupsen/logrus"
     "github.com/spf13/pflag"
     "github.com/suryakencana007/sanhook/configs"
     "github.com/suryakencana007/sanhook/internal/container"
@@ -106,7 +105,7 @@ func (h *httpCmd) serve(router *chi.Mux) error {
         if err := s.ListenAndServe(); err != nil {
             log.Info(
                 "Server gracefully ListenAndServe",
-                logrus.Fields{})
+            )
             errCh <- err
         }
         <-h.stop
@@ -117,7 +116,7 @@ func (h *httpCmd) serve(router *chi.Mux) error {
         case err := <-errCh:
             log.Info(
                 "Server gracefully h stop stopped",
-                logrus.Fields{})
+            )
             return err
         case <-h.stop:
         case <-quit:
@@ -127,7 +126,7 @@ func (h *httpCmd) serve(router *chi.Mux) error {
         case err := <-errCh:
             log.Info(
                 "Server gracefully stopped",
-                logrus.Fields{})
+            )
             return err
         case <-quit:
         }

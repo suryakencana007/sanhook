@@ -28,8 +28,10 @@ func New(config *configs.Config) Factory {
     return &Container{Config: config}
 }
 
-var once sync.Once
-var instance Factory
+var (
+    once     sync.Once
+    instance Factory
+)
 
 func Instance(config *configs.Config) Factory {
     once.Do(func() {
