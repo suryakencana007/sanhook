@@ -16,7 +16,6 @@ import (
     "github.com/go-chi/render"
     "github.com/suryakencana007/sanhook/configs"
     "github.com/suryakencana007/sanhook/internal/health"
-    "github.com/suryakencana007/sanhook/internal/nats"
     "github.com/suryakencana007/sanhook/pkg/datadog"
 )
 
@@ -40,7 +39,7 @@ func Routes(configuration *configs.Config) *chi.Mux {
         )
         r.Mount(
             fmt.Sprintf(`%s/%s`, configuration.Api.Prefix, "message"),
-            nats.MakeHandler(configuration),
+            messageMakeHandler(configuration),
         )
     })
 

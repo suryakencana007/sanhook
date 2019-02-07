@@ -77,7 +77,9 @@ func New(filename string, paths ...string) *Config {
     }
     constants := initViper(filename, paths...)
     // init log
-    log.Init(constants.Log.Dir, constants.Log.Filename, constants.App.Debug)
+    // log.Init(constants.Log.Dir, constants.Log.Filename, constants.App.Debug)
+    // log.LogrusInit()
+    log.ZapInit()
     // init Infrastructure DB
     return &Config{
         constants,

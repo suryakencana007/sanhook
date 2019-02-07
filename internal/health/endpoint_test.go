@@ -14,14 +14,13 @@ import (
     "net/http/httptest"
     "testing"
 
-    "github.com/suryakencana007/sanhook/internal/container"
     pkgHttp "github.com/suryakencana007/sanhook/pkg/http"
 )
 
 // Unit Test Health
 func TestHealth(t *testing.T) {
     res, _ := testHandler(t,
-        getAPIStatus(container.New().NewItemServiceJSON()),
+        getAPIStatus(),
         http.MethodGet, "/health", nil)
     if got, want := res.StatusCode, http.StatusOK; got != want {
         t.Fatalf("status code got: %d, want %d", got, want)

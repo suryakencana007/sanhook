@@ -10,7 +10,6 @@ package infrastructures
 
 import (
     _ "github.com/go-sql-driver/mysql"
-    "github.com/sirupsen/logrus"
     "github.com/suryakencana007/sanhook/configs"
     "github.com/suryakencana007/sanhook/pkg/log"
     "github.com/suryakencana007/sanhook/pkg/sql"
@@ -44,9 +43,10 @@ func (s *MysqlInfrastructure) OpenConnection(connString string, config *configs.
 func (s *MysqlInfrastructure) GetDB() (*sql.DB, error) {
     err := s.Ping()
     if err != nil {
-        log.Error("Get DB", logrus.Fields{
-            "error": err.Error(),
-        })
+        log.Error(
+            "Get DB",
+            log.Field("error", err.Error()),
+        )
         return nil, err
     }
 

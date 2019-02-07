@@ -23,11 +23,14 @@ import (
     internalHttp "github.com/suryakencana007/sanhook/internal/http"
 )
 
-var table = `+---------+---------------------------+--------+
-| HANDLER |            URL            | METHOD |
-+---------+---------------------------+--------+
-|         | /v1/*/api/status/*/health | GET    |
-+---------+---------------------------+--------+
+var table = `+---------+-----------------------------------------------+--------+
+| HANDLER |                      URL                      | METHOD |
++---------+-----------------------------------------------+--------+
+|         | /v1/*/api/message/*/inbox                     | GET    |
+|         | /v1/*/api/message/*/inbox/{id:[a-z-0-9]+}     | GET    |
+|         | /v1/*/api/message/*/publish/{subject:[a-z-]+} | GET    |
+|         | /v1/*/api/status/*/health                     | GET    |
++---------+-----------------------------------------------+--------+
 `
 
 var (

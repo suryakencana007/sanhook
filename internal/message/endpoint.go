@@ -6,22 +6,23 @@
 * @Last Modified time: 2018-12-17 00:51 
  */
 
-package nats
+package message
 
 import (
-    "log"
+    "fmt"
     "net/http"
     "strings"
 
     "github.com/go-chi/chi"
     "github.com/nats-io/go-nats"
-    "github.com/suryakencana007/sanhook/internal/message"
+    "github.com/suryakencana007/sanhook/configs"
     "github.com/suryakencana007/sanhook/pkg/entity"
+    "github.com/suryakencana007/sanhook/pkg/log"
     "github.com/suryakencana007/sanhook/pkg/response"
 )
 
 // Publish Message
-func getPublishMessage(svc message.Service) http.HandlerFunc {
+func GetPublishMessage(c *configs.Config, svc Service) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         messageID := make(chan string, 1)
         subject := chi.URLParam(r, "subject")
@@ -29,43 +30,43 @@ func getPublishMessage(svc message.Service) http.HandlerFunc {
             response.Write(w, r, response.APIErrorInvalidData)
             return
         }
-        log.Println(subject)
+        log.Debug("Get Publish Message", log.Field("subject", subject))
         params := r.URL.Query()
         msg, ok := params["message"]
         if !ok {
             msg = []string{""}
         }
-        log.Println(msg)
+        log.Debug("Param:message", log.Field("Message", msg))
         go func() {
-            urls := nats.DefaultURL
+            urls := c.Nats.Host
             // Connect Options.
             opts := []nats.Option{nats.Name("NATS Sample Publisher")}
 
             // Connect to NATS
             nc, err := nats.Connect(urls, opts...)
             if err != nil {
-                log.Fatal(err)
+                log.Fatal("Error", log.Field("Error", err))
             }
             defer nc.Close()
 
             if err := nc.Publish(subject, []byte(strings.Join(msg, " ")));
                 err != nil {
-                log.Fatal(err)
+                log.Fatal("Error", log.Field("Error", err))
             }
             if err := nc.Flush();
                 err != nil {
-                log.Fatal(err)
+                log.Fatal("Error", log.Field("Error", err))
             }
             if err := nc.LastError(); err != nil {
-                log.Fatal(err)
+                log.Fatal("Error", log.Field("Error", err))
             } else {
-                log.Printf("Published [%s] : '%s'\n", subject, msg)
+                log.Info("getPublishMessage", log.Field("message", fmt.Sprintf("Published [%s] : '%s'", subject, msg)))
             }
             store := entity.Message{}
             store.Subject = subject
             store.Content = strings.Join(msg, " ")
             if id, err := svc.StoreMessage(store); err == nil {
-                log.Printf("Success Store Subject [%s] - ID: '%s'\n", subject, id)
+                log.Info("getPublishMessage", log.Field("message", fmt.Sprintf("Success Store Subject [%s] - ID: '%s'", subject, id)))
                 messageID <- id
             }
         }()
@@ -82,7 +83,7 @@ func getPublishMessage(svc message.Service) http.HandlerFunc {
     }
 }
 
-func getInboxMessage(svc message.Service) http.HandlerFunc {
+func GetInboxMessage(svc Service) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         id := chi.URLParam(r, "id")
         if len(id) < 1 {
@@ -101,7 +102,7 @@ func getInboxMessage(svc message.Service) http.HandlerFunc {
     }
 }
 
-func getInboxAll(svc message.Service) http.HandlerFunc {
+func GetInboxAll(svc Service) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         var messages []map[string]interface{}
         for _, message := range svc.All() {

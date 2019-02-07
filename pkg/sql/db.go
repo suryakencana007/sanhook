@@ -16,7 +16,6 @@ import (
     "time"
 
     "github.com/afex/hystrix-go/hystrix"
-    "github.com/sirupsen/logrus"
     "github.com/suryakencana007/sanhook/configs"
     "github.com/suryakencana007/sanhook/pkg/log"
 )
@@ -96,10 +95,8 @@ func (r *DB) Query(query string, args ...interface{}) (rs *sql.Rows, err error) 
     if err = r.callBreaker(func() error {
         if r.DB == nil {
             err = errors.New("the database connection is nil")
-            log.Error(err, logrus.Fields{
-                "query": query,
-                "args":  args,
-            })
+            log.Error(err.Error(), log.Field("query", query), log.Field("args", args))
+
             return err
         }
         if rs, err = r.DB.Query(query, args...); err != nil {
@@ -107,10 +104,7 @@ func (r *DB) Query(query string, args ...interface{}) (rs *sql.Rows, err error) 
         }
         return nil
     }); err != nil {
-        log.Error(err.Error(), logrus.Fields{
-            "query": query,
-            "args":  args,
-        })
+        log.Error(err.Error(), log.Field("query", query), log.Field("args", args))
     }
     return rs, err
 }
@@ -120,19 +114,13 @@ func (r *DB) QueryRow(query string, args ...interface{}) (rs *sql.Row, err error
     if err = r.callBreaker(func() (err error) {
         if r.DB == nil {
             err = errors.New("the database connection is nil")
-            log.Error(err, logrus.Fields{
-                "query": query,
-                "args":  args,
-            })
+            log.Error(err.Error(), log.Field("query", query), log.Field("args", args))
             return err
         }
         rs = r.DB.QueryRow(query, args...)
         return nil
     }); err != nil {
-        log.Error(err, logrus.Fields{
-            "query": query,
-            "args":  args,
-        })
+        log.Error(err.Error(), log.Field("query", query), log.Field("args", args))
     }
     return rs, err
 }
