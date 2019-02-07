@@ -19,7 +19,7 @@ import (
 )
 
 // handleInternal handler for internal route
-func messageMakeHandler(c *configs.Config) *chi.Mux {
+func messageTransport(c *configs.Config) *chi.Mux {
     injector := container.Instance(c).Build()                        // inject just service needed
     fmt.Println("alamat memory injector:", unsafe.Pointer(injector)) // service needed
     router := chi.NewRouter()
