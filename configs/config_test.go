@@ -40,7 +40,7 @@ db_timeout = 1500
 max_concurrent = 5
 
 [Nats]
-host = "0.0.0.0"
+host = "127.0.0.1" # if remote access from local use 0.0.0.0
 port = 4222
 no_log = true
 no_signal = true

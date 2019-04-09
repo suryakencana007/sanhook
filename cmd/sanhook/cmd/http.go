@@ -3,7 +3,7 @@
 * @Author:             Nanang Suryadi <nanang.suryadi@kubuskotak.com>
 * @Date:               September 30, 2018
 * @Last Modified by:   @suryakencana007
-* @Last Modified time: 30/09/18 01:37 
+* @Last Modified time: 30/09/18 01:37
  */
 
 package cmd
@@ -111,25 +111,20 @@ func (h *httpCmd) serve(router *chi.Mux) error {
         <-h.stop
     }()
 
-    if h.stop != nil {
-        select {
-        case err := <-errCh:
-            log.Info(
-                "Server gracefully h stop stopped",
-            )
-            return err
-        case <-h.stop:
-        case <-quit:
-        }
-    } else {
-        select {
-        case err := <-errCh:
-            log.Info(
-                "Server gracefully stopped",
-            )
-            return err
-        case <-quit:
-        }
+    select {
+    case err := <-errCh:
+        log.Info(
+            "Server gracefully err stopped",
+        )
+        return err
+    case <-h.stop:
+        log.Info(
+            "Server gracefully h stop stopped",
+        )
+    case <-quit:
+        log.Info(
+            "Server gracefully quit stop stopped",
+        )
     }
     return nil
 }

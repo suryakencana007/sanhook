@@ -97,7 +97,9 @@ func fieldType(fields ...interface{}) []ZapField {
     for _, v := range fields {
         val := v.([]interface{})
         if len(val) > 0 {
-            f = append(f, val[0].(ZapField))
+            for _, field := range val {
+                f = append(f, field.(ZapField))
+            }
         }
     }
     strGoStack := "%n"
